@@ -1,9 +1,31 @@
-const http = require("http");
+const express = require("express");
 
-let server = http.createServer((req, res)=> {
-    console.log("URL: ", req.url);
-    console.log("Method: ", req.method);
-    res.end("OK");
+let app = express();
+
+app.get("/",(req, res)=> {
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "text/html");
+    res.end("<h1>Seja bem Vindo</h1>");
 });
 
-server.listen(3000, '127.0.0.1', ()=> {console.log("Servidor rodando!")});
+app.get("/users",(req, res)=> {
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "application/json");
+    res.json({
+        users: {
+        name:"felipe",
+        contato: "felipe@gmail.com",
+        id: 1
+        }
+    });
+});
+
+
+
+
+
+            
+
+
+
+app.listen(3000, '127.0.0.1', ()=> {console.log("Servidor rodando!")});
