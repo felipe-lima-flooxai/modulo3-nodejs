@@ -1,0 +1,20 @@
+REST 
+Conceitos de servidores
+
+nodejs
+
+npm
+npm install  e  npm instal --save
+npm package
+npm dependencies
+npm and git
+
+express
+
+nodemon
+npm install nodemon -g
+
+consign
+NeDB
+express validator atual
+body-parser
