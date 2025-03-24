@@ -4,7 +4,10 @@ let db = new NeDB({
     autoload:true
 });
 
+const { userValidations, validate } = require('../utils/validator.js');
+
 module.exports = (app)=>{
+    //rota normal
     let route = app.route("/users")
 
     route.get((req, res)=> {
@@ -24,7 +27,8 @@ module.exports = (app)=>{
         
     });
     
-    route.post((req, res)=> {
+    route.post(userValidations, validate, (req, res)=> {
+
         db.insert(req.body, (err, user)=>{
             if(err){
                 app.utils.error.send(err, req, res);
@@ -34,13 +38,35 @@ module.exports = (app)=>{
         });
     });
     
+    //rota 2, dinâmica
     let routeID = app.route("/users/:id");
+
     routeID.get((req, res)=>{
         db.findOne({_id:req.params.id}).exec((err, user) => {
             if(err) {
                 app.utils.error.send(err, req, res);
             } else {
                 res.status(200).json(user);
+            }
+        });
+    });
+
+    routeID.put((req, res)=>{
+        db.update({_id:req.params.id}, req.body, err => {
+            if(err) {
+                app.utils.error.send(err, req, res);
+            } else {
+                res.status(200).json(Object.assign(req.params, req.body));
+            }
+        });
+    });
+
+    routeID.delete((req, res)=> {
+        db.remove({_id: req.params.id}, {}, err =>{
+            if(err) {
+                app.utils.error.send(err, req, res);
+            } else {
+                res.status(200).json(req.params);
             }
         });
     });
